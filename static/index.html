@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Radio Streamer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i data-lucide="radio" class="brand-icon"></i>
+                <h2>Airline</h2>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="playback">
+                    <i data-lucide="play-circle"></i>
+                    <span>Playback</span>
+                </button>
+                <button class="nav-item" data-tab="wifi-config">
+                    <i data-lucide="wifi"></i>
+                    <span>Wi-Fi Config</span>
+                </button>
+                <button class="nav-item" data-tab="about">
+                    <i data-lucide="info"></i>
+                    <span>About Project</span>
+                </button>
+            </nav>
+            <div class="system-status">
+                <div class="status-indicator" id="sidebar-status-dot"></div>
+                <span id="sidebar-status-text">Checking server...</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header for Mobile Layout -->
+            <header class="mobile-header">
+                <div class="brand">
+                    <i data-lucide="radio" class="brand-icon"></i>
+                    <h2>Airline</h2>
+                </div>
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i data-lucide="menu"></i>
+                </button>
+            </header>
+
+            <!-- Page Header Image Banner -->
+            <div class="page-header-banner">
+                <img src="images/gallery_listener.jpg" alt="Airline Radio Listening Banner">
+            </div>
+
+            <!-- Playback Tab -->
+            <section id="tab-playback" class="tab-pane active">
+                <div class="view-header">
+                    <h1>Radio Playback</h1>
+                    <p>Manage and stream audio through your Airline Radio</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Now Playing Card -->
+                    <div class="card now-playing-card">
+                        <div class="card-header">
+                            <h3>Now Playing</h3>
+                            <span class="badge" id="playback-badge">Stopped</span>
+                        </div>
+                        <div class="now-playing-body">
+                            <div class="visualizer-container">
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                            </div>
+                            <div class="stream-info">
+                                <h2 id="current-title">No Stream Loaded</h2>
+                                <p id="current-url" class="truncate">Select a station to begin</p>
+                            </div>
+                            <div class="playback-controls">
+                                <button class="btn btn-secondary btn-icon" id="btn-stop" title="Stop Playback" disabled>
+                                    <i data-lucide="square"></i>
+                                </button>
+                                <button class="btn btn-primary btn-play-large" id="btn-play-status" title="Play">
+                                    <i data-lucide="play" id="play-status-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Status Quick Card -->
+                    <div class="card network-quick-card">
+                        <div class="card-header">
+                            <h3>Network Info</h3>
+                        </div>
+                        <div class="network-body">
+                            <div class="network-item">
+                                <span class="label">Status</span>
+                                <span class="val" id="net-status-text">Disconnected</span>
+                            </div>
+                            <div class="network-item">
+                                <span class="label">Mode</span>
+                                <span class="val" id="net-mode-text">-</span>
+                            </div>
+                            <div class="network-item">
+                                <span class="label">SSID</span>
+                                <span class="val truncate" id="net-ssid-text">-</span>
+                            </div>
+                            <div class="network-item">
+                                <span class="label">IP Address</span>
+                                <span class="val" id="net-ip-text">127.0.0.1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stream Selection -->
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2>Radio Stations</h2>
+                    </div>
+                    
+                    <div class="streams-grid" id="streams-list">
+                        <!-- Streams will be loaded dynamically here -->
+                        <div class="loading-placeholder">
+                            <div class="spinner"></div>
+                            <p>Loading streams...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Custom Stream -->
+                <div class="section-container">
+                    <div class="card add-stream-card">
+                        <div class="card-header">
+                            <h3>Add Custom Audio Stream</h3>
+                        </div>
+                        <form id="add-stream-form" class="stream-form">
+                            <div class="form-group">
+                                <label for="stream-name">Station Name</label>
+                                <input type="text" id="stream-name" placeholder="e.g. Classic Jazz FM" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="stream-url">Stream URL</label>
+                                <input type="url" id="stream-url" placeholder="e.g. http://icecast.com/stream.mp3" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-lucide="plus"></i> Add Station
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wi-Fi Config Tab -->
+            <section id="tab-wifi-config" class="tab-pane">
+                <div class="view-header">
+                    <h1>Wi-Fi Settings</h1>
+                    <p>Configure network connection for your device</p>
+                </div>
+
+                <div class="wifi-grid">
+                    <!-- Current Wi-Fi Status -->
+                    <div class="card wifi-status-card">
+                        <div class="card-header">
+                            <h3>Connection Details</h3>
+                            <span class="badge badge-success" id="wifi-badge">Active</span>
+                        </div>
+                        <div class="wifi-status-body">
+                            <div class="wifi-icon-container">
+                                <i data-lucide="wifi" id="wifi-main-icon" class="glowing-icon"></i>
+                            </div>
+                            <div class="wifi-details">
+                                <h3 id="wifi-details-ssid">Searching...</h3>
+                                <p id="wifi-details-ip">IP: 127.0.0.1</p>
+                                <p id="wifi-details-mode">Mode: Client</p>
+                            </div>
+                            
+                            <div class="hotspot-warning" id="hotspot-banner" style="display: none;">
+                                <i data-lucide="alert-triangle"></i>
+                                <div>
+                                    <h4>Device in Access Point Mode</h4>
+                                    <p>Connect your phone/laptop to <strong>RaspberryRadio</strong> (password: <strong>radio1234</strong>) to access this dashboard. Configure your home Wi-Fi below to switch modes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wi-Fi Scan & Connections -->
+                    <div class="card wifi-networks-card">
+                        <div class="card-header">
+                            <h3>Available Wi-Fi Networks</h3>
+                            <button class="btn btn-secondary btn-sm" id="btn-scan-wifi">
+                                <i data-lucide="rotate-cw" id="scan-icon"></i> Scan
+                            </button>
+                        </div>
+                        <div class="networks-list-container">
+                            <div class="networks-list" id="wifi-networks-list">
+                                <!-- Networks loaded dynamically -->
+                                <p class="placeholder-text">Click "Scan" to look for nearby Wi-Fi networks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Project Tab -->
+            <section id="tab-about" class="tab-pane">
+                <div class="view-header">
+                    <h1>About Airline Radio</h1>
+                    <p>Hardware architecture and project documentation</p>
+                </div>
+
+                <div class="about-container">
+                    <div class="card about-card">
+                        <div class="about-section">
+                            <h2>Historical Overview</h2>
+                            <p>The Montgomery Ward Airline Model 04BR-729A is an excellent slice of pre-war American consumer electronics history. Released for the 1941 model year, this table-top radio was sold through Montgomery Ward's massive mail-order catalog and retail stores under their proprietary Airline brand name.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>Technical & Chassis Architecture</h2>
+                            <p>Underneath its walnut-veneered cabinet, the 04BR-729A utilizes a classic superheterodyne circuit configuration typical of high-quality tabletop receivers of the early 1940s.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>Tube Lineup</h2>
+                            <p>It features a 7-tube complement (plus a rectifier), using standard Octal-base tubes. A typical Belmont 7-tube chassis from this specific run generally relies on the following stage configuration:</p>
+                            <ul class="features-list">
+                                <li><strong>RF Amplifier (6SK7):</strong> Improves selectivity and reduces image responses before mixing.</li>
+                                <li><strong>Converter/Oscillator (6SA7):</strong> Frequency mixing and carrier wave generation.</li>
+                                <li><strong>IF Amplifier (6SK7):</strong> Operating at a standard Intermediate Frequency of 455 kHz.</li>
+                                <li><strong>Detector / AVC / 1st Audio (6SQ7):</strong> Demodulates the signal and drives audio pre-amplification.</li>
+                                <li><strong>Audio Output (6V6G / 6V6GT):</strong> A classic, robust beam power tetrode capable of delivering clean, warm audio output to the dynamic speaker.</li>
+                                <li><strong>Rectifier (5Y3G / 5Y3GT):</strong> Provides DC power conversion.</li>
+                                <li><strong>Tuning Indicator (6U5 / 6G5):</strong> "Magic Eye" tube providing a glowing green visual indicator of signal strength.</li>
+                            </ul>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>Bands & Tuning Features</h2>
+                            <p>The radio is a multi-band receiver. It covers the standard Broadcast band (AM) alongside Shortwave bands, allowing users of the era to monitor international broadcasts—a highly popular feature as WWII intensified in Europe.</p>
+                            <p>It includes permeability-tuned pushbuttons below the main dial scale for quick mechanical station selection, alongside continuous manual tuning. The dial face itself features a distinctive horizontal layout with a back-lit glass scale.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>Belmont Radio Corporation (Manufacturer)</h2>
+                            <p>The Belmont Radio Corporation, founded in Chicago in 1925, was one of the United States' most prolific high-volume electronic contract manufacturers of the pre-war and post-war eras. Operating from the heart of Chicago's industrial hub—the global epicenter of radio production alongside industry giants like Zenith and Motorola—Belmont specialized in designing and engineering high-quality receivers for major private-label distributors. Their most significant partnership was with Montgomery Ward, for whom they manufactured thousands of "Airline" brand radios from the early 1930s until the mid-1950s. Known for their robust engineering and standard Octal-tube architectures, Belmont-made chassis were celebrated for their reliability and sensitivity. Following their pivotal war production years, Belmont transitioned to television manufacturing and was eventually acquired by Raytheon and later Admiral Corporation.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>Modern Streamer Upgrade</h2>
+                            <p>To preserve this beautiful physical chassis while adapting it for modern listeners, we have integrated a headless network streamer (powered by a Raspberry Pi). The software configuration features:</p>
+                            <ul class="features-list">
+                                <li><strong>Low Resource Footprint:</strong> Built completely using Python's standard library for zero dependencies, guaranteeing it runs on older hardware (like Raspberry Pi 1, Zero, or 2).</li>
+                                <li><strong>Headless Audio Playback:</strong> Utilizes <code>ffplay</code> with the <code>-nodisp</code> flag to avoid window rendering over X11, optimizing CPU and memory usage.</li>
+                                <li><strong>Network Automation:</strong> Automatically monitors network health. If no Wi-Fi connection is active, the system configures a fallback Access Point hotspot using NetworkManager, enabling headless Wi-Fi configuration.</li>
+                                <li><strong>State Persistence:</strong> Saves customized stations and automatically resumes the last-played stream on system boot.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Photos and Schematics -->
+                    <div class="section-header">
+                        <h2>Hardware Assembly & Schematic</h2>
+                    </div>
+
+                    <div class="gallery-grid">
+                        <!-- Cabinet Photo -->
+                        <div class="gallery-card" onclick="openLightbox('cabinet-img')">
+                            <div class="gallery-image-wrapper">
+                                <img src="images/gallery_radio.jpg" id="cabinet-img" alt="Vintage Tabletop Radio Cabinet Enclosure">
+                            </div>
+                            <div class="gallery-caption">
+                                <h3>Vintage Radio Cabinet</h3>
+                                <p>Authentic Montgomery Ward wood cabinet housing the modern streamer hardware.</p>
+                            </div>
+                        </div>
+
+                        <!-- 1941 Schematic -->
+                        <div class="gallery-card" onclick="openLightbox('vintage-schematic-img')">
+                            <div class="gallery-image-wrapper">
+                                <img src="images/gallery_schematic.jpg" id="vintage-schematic-img" alt="1941 Montgomery Ward Radio Receiver Schematic">
+                            </div>
+                            <div class="gallery-caption">
+                                <h3>Montgomery Ward Manual</h3>
+                                <p>Original 1941 radio receiver wiring diagram and mechanical layout blueprint details.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page Footer Image Banner -->
+            <div class="page-footer-banner">
+                <img src="images/gallery_concert.jpg" alt="Live Concert Audience Banner">
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Overlay (Sidebar Drawer) -->
+    <div class="mobile-nav-overlay" id="navOverlay"></div>
+
+    <!-- Wi-Fi Password Modal -->
+    <div class="modal" id="wifi-modal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h3 id="modal-wifi-title">Connect to Wi-Fi</h3>
+                <button class="modal-close" id="wifi-modal-close">&times;</button>
+            </div>
+            <form id="wifi-connect-form">
+                <input type="hidden" id="modal-wifi-ssid">
+                <div class="form-group">
+                    <label for="modal-wifi-password">Password</label>
+                    <input type="password" id="modal-wifi-password" placeholder="Enter WPA pre-shared key" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="wifi-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Connect</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div class="lightbox" id="image-lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "streams": [
+    {
+      "id": "kcsm",
+      "name": "KCSM Jazz 91.1",
+      "url": "http://ice5.securenetsystems.net/KCSM",
+      "default": true
+    },
+    {
+      "id": "wnyc",
+      "name": "WNYC 93.9 FM",
+      "url": "https://fm939.wnyc.org/wnycfm.aac",
+      "default": true
+    },
+    {
+      "id": "bbc",
+      "name": "BBC World",
+      "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service",
+      "default": true
+    },
+    {
+      "id": "somafm_groove",
+      "name": "SomaFM Groove Salad",
+      "url": "http://ice1.somafm.com/groovesalad-128-mp3",
+      "default": true
+    },
+    {
+      "id": "custom_kjazz_1780970133",
+      "name": "KJAZZ",
+      "url": "https://streaming.live365.com/a49833",
+      "default": false
+    }
+  ],
+  "last_played_id": "bbc"
+}

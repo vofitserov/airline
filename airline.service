@@ -1,0 +1,14 @@
+[Unit]
+Description=Airline Radio Streamer & Wi-Fi Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/pi/airline
+ExecStart=/usr/bin/python3 /home/pi/airline/app.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
