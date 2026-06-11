@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import http.server
-import socketserver
+from http.server import BaseHTTPRequestHandler
+from http.server import HTTPServer
+from socketserver import ThreadingMixIn
+from socketserver import TCPServer
 import json
 import os
 import subprocess
@@ -170,7 +172,7 @@ def connect_wifi_worker(ssid, password):
     except Exception as e:
         wifi_connect_status = {"status": "failed", "message": f"Error: {str(e)}"}
 
-class RadioHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+class HTTPAirlineHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         req = format % args
         if req.find('/api/status') != -1: return
@@ -428,10 +430,14 @@ class HTTPWatcher(threading.Thread):
             pass
         return
 
+class HTTPAirlineServer(ThreadingMixIn, HTTPServer):
+    address_family = socket.AF_INET6
+    def __init__(self, address, handler_class):
+        HTTPServer.__init__(self, address, handler_class)
+        return
 
 def run_server():
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", HTTP_PORT), RadioHTTPRequestHandler) as httpd:
+    with HTTPAirlineServer(("", HTTP_PORT), HTTPAirlineHandler) as httpd:
         logger.info(f"Web server running at http://localhost:{HTTP_PORT}/")
         try:
             httpd.serve_forever()
