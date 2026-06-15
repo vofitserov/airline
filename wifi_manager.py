@@ -216,6 +216,9 @@ def connect_to_wifi(ssid, password):
         # Ensure hotspot is down if running
         stop_hotspot()
         
+        # Delete existing connection by name before attempting to connect to avoid profile conflicts
+        subprocess.run(["nmcli", "connection", "delete", ssid], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        
         # Connect to wifi
         cmd = ["nmcli", "device", "wifi", "connect", ssid]
         if password:
