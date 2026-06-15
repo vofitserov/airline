@@ -705,10 +705,12 @@ body {
     gap: 1rem;
 }
 
-.wifi-net-info i {
+.wifi-net-info i,
+.wifi-net-info svg {
     width: 1.15rem;
     height: 1.15rem;
     color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
 .wifi-net-info .ssid-name {

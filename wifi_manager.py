@@ -144,11 +144,12 @@ def scan_wifi_networks():
     if not is_nmcli_available():
         # Return mock list
         return [
-            {"ssid": "Home-Network-5G", "signal": 95, "security": "WPA2"},
-            {"ssid": "CoffeeShop_Free", "signal": 72, "security": "WPA1 WPA2"},
-            {"ssid": "Neighbor-WiFi", "signal": 45, "security": "WPA2"},
-            {"ssid": "Radio-Lab", "signal": 88, "security": "WPA2"},
-            {"ssid": "Open-Access-Point", "signal": 60, "security": ""}
+            {"ssid": "Home Network 5G", "signal": 95, "security": "WPA2"},
+            {"ssid": "Addams Family Guest", "signal": 95, "security": "WPA2"},
+            {"ssid": "CoffeeShop Free", "signal": 72, "security": "WPA1 WPA2"},
+            {"ssid": "Neighbor WiFi", "signal": 45, "security": "WPA2"},
+            {"ssid": "Radio Lab", "signal": 88, "security": "WPA2"},
+            {"ssid": "Open Access Point", "signal": 60, "security": ""}
         ]
 
     try:
